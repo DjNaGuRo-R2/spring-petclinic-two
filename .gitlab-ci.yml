@@ -1,0 +1,18 @@
+image: java:8
+
+maven test:
+  stage: test
+  script:
+    - ./mvnw test
+  only:
+    - branches
+
+maven build:
+  stage: build
+  script:
+  #  - ./mvnw package
+    - ./mvnw clean install -DskipTests
+  artifacts:
+    paths:
+      - "target/*.jar"
+    expire_in: 1d
