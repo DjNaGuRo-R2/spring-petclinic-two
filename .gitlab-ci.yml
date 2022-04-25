@@ -6,6 +6,9 @@ maven test:
     - ./mvnw test
   only:
     - branches
+  artifacts:
+    reports:
+      junit: "**/TEST-*.xml"
 
 maven build:
   stage: build
