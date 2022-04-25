@@ -28,6 +28,8 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.DisplayName;
 
 /**
  * @author Michael Isvy Simple test to make sure that Bean Validation is working (useful
@@ -58,5 +60,12 @@ public class ValidatorTests {
         assertThat(violation.getPropertyPath().toString()).isEqualTo("firstName");
         assertThat(violation.getMessage()).isEqualTo("must not be empty");
     }
-
+    
+    @Test 
+    @DisplayName("Simple display firstname Alan")
+    public void displayAlan() throws Exception {
+        Person alan = new Person();
+        alan.setFirstName("Alan");
+        assertEquals("Alan", alan.getFirstName(), "The firstname is Alan. It works!");
+    }
 }
