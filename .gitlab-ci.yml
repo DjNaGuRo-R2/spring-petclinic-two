@@ -1,3 +1,7 @@
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+  
 image: java:8
 
 maven test:
@@ -19,3 +23,10 @@ maven build:
     paths:
       - "target/*.jar"
     expire_in: 1d
+
+code_quality:
+  variables:
+    REPORT_FORMAT: html
+  artifacts:
+    expose_as: 'Code Quality Report'
+    paths: [gl-code-quality-report.html]
