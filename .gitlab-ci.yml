@@ -3,7 +3,7 @@ stages:
   - build
   - deploy
   - docker-build
-  
+
 include:
   - template: Jobs/SAST.gitlab-ci.yml
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
@@ -54,5 +54,19 @@ build docker:
     - docker build --build-arg PORT=$PORT -t $IMAGE_TAG:latest -t $IMAGE_TAG:$CI_COMMIT_SHA .
     - docker push $IMAGE_TAG:latest
     - docker push $IMAGE_TAG:$CI_COMMIT_SHA
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  tags:
+    - deploy
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG
+  script:
+    - docker pull $IMAGE_TAG:latest
+    - docker stop $IMAGE_TAG:latest || true
+    - docker rm $IMAGE_TAG:latest || true
+    - docker run -d -p 8080:8080 $IMAGE_TAG:latest
   only:
     - master
