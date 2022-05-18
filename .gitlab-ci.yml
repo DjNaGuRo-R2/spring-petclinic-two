@@ -1,3 +1,9 @@
+stages:
+  - test
+  - build
+  - deploy
+  - docker-build
+  
 include:
   - template: Jobs/SAST.gitlab-ci.yml
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
