@@ -31,3 +31,22 @@ code_quality:
   artifacts:
     expose_as: 'Code Quality Report'
     paths: [gl-code-quality-report.html]
+
+build docker:
+  stage: docker-build
+  image: docker:stable
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    IMAGE_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG
+    PORT: 8080
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker build --build-arg PORT=$PORT -t $IMAGE_TAG:latest -t $IMAGE_TAG:$CI_COMMIT_SHA .
+    - docker push $IMAGE_TAG:latest
+    - docker push $IMAGE_TAG:$CI_COMMIT_SHA
+  only:
+    - master
