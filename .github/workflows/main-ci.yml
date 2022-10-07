@@ -9,6 +9,7 @@ jobs:
       - name: Setup Java environment
         uses: actions/setup-java@v3
         with:
+          distribution: 'temurin'
           java-version: '8'
           cache: 'maven'
       - name: Running tests 
@@ -28,6 +29,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           java-version: '8'
+          distribution: 'temurin'
           cache: 'maven'
       - name: Build the project
         run: ./mvnw build
